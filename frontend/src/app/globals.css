@@ -1,0 +1,159 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    --background: #05070b;
+    --foreground: #e2e8f0;
+  }
+
+  html,
+  body {
+    height: 100%;
+    background-color: #05070b;
+  }
+
+  body {
+    @apply bg-ink-950 text-slate-200 font-sans antialiased;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 229, 255, 0.06), transparent),
+      radial-gradient(ellipse 60% 50% at 80% 100%, rgba(124, 92, 255, 0.05), transparent);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    @apply bg-cyber-cyan/30 text-white;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-ink-900;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-ink-700 rounded-full;
+    border: 1px solid rgba(0, 229, 255, 0.15);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-ink-600;
+  }
+}
+
+@layer components {
+  .cyber-grid {
+    background-image:
+      linear-gradient(rgba(0, 229, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 229, 255, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .cyber-grid-animated {
+    background-image:
+      linear-gradient(rgba(0, 229, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 229, 255, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    @apply animate-gridMove;
+  }
+
+  .hex-grid {
+    background-color: transparent;
+    background-image: url("data:image/svg+xml,%3Csvg width='28' height='49' viewBox='0 0 28 49' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M14 0L28 8.5v17L14 34 0 25.5v-17z' fill='none' stroke='%2300e5ff' stroke-opacity='0.05' stroke-width='1'/%3E%3C/svg%3E");
+  }
+
+  .glass-panel {
+    @apply bg-ink-900/70 backdrop-blur-md border border-cyber-cyan/10 rounded-xl;
+  }
+
+  .glass-panel-strong {
+    @apply bg-ink-850/90 backdrop-blur-md border border-cyber-cyan/15 rounded-xl;
+  }
+
+  .neon-text-green {
+    color: #00ff9d;
+    text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+  }
+
+  .neon-text-cyan {
+    color: #00e5ff;
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+  }
+
+  .neon-text-critical {
+    color: #ff2d55;
+    text-shadow: 0 0 12px rgba(255, 45, 85, 0.6);
+  }
+
+  .terminal-text {
+    @apply font-mono text-cyber-green;
+  }
+
+  .severity-badge {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold uppercase tracking-wider font-mono;
+  }
+
+  .severity-low {
+    @apply severity-badge bg-risk-low/10 text-risk-low border border-risk-low/30;
+  }
+  .severity-medium {
+    @apply severity-badge bg-risk-medium/10 text-risk-medium border border-risk-medium/30;
+  }
+  .severity-high {
+    @apply severity-badge bg-risk-high/10 text-risk-high border border-risk-high/30;
+  }
+  .severity-critical {
+    @apply severity-badge bg-risk-critical/10 text-risk-critical border border-risk-critical/30;
+  }
+
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-ink-800/60 transition-all duration-200 cursor-pointer;
+  }
+
+  .nav-item-active {
+    @apply text-cyber-cyan bg-cyber-cyan/10 border border-cyber-cyan/30 shadow-glow-cyan;
+  }
+
+  .btn-cyber {
+    @apply relative inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm text-ink-950 bg-cyber-cyan hover:bg-cyber-cyan/90 transition-all duration-200 hover:shadow-glow-cyan;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm text-slate-300 border border-ink-600 hover:border-cyber-cyan/40 hover:text-cyber-cyan transition-all duration-200;
+  }
+
+  .stat-card {
+    @apply glass-panel p-5 relative overflow-hidden hover:border-cyber-cyan/30 transition-all duration-300;
+  }
+
+  .section-title {
+    @apply text-xs font-mono uppercase tracking-[0.2em] text-cyber-cyan/70;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .clip-corner {
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  }
+
+  .glow-line {
+    background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.6), transparent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

