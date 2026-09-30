@@ -94,37 +94,22 @@ threat2risk-ai/
 
 ---
 
-## ⚡ Quick Start (Local Setup)
+## ⚡ Quick Start (Run Entire App in 1 Command)
 
 ### Prerequisites
 * **Python**: `3.10` or higher
 * **Node.js**: `18.0` or higher
-* **npm**: `9.0` or higher
 
-### 1️⃣ Clone the Repository
-```bash
-git clone https://github.com/YOUR_USERNAME/threat2risk-ai.git
-cd threat2risk-ai
-```
+### 🚀 Run the Entire Project
+To launch both the **FastAPI Backend (Port 8000)** and **Next.js Frontend (Port 4000)** simultaneously:
 
-### 2️⃣ Start the Backend API (FastAPI)
 ```bash
-cd backend
-python -m venv venv
-source venv/bin/activate   # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+python threat2risk-ai.py
 ```
-> The API will be live at `http://localhost:8000`. API Documentation is available at `http://localhost:8000/docs`.
-
-### 3️⃣ Start the Frontend App (Next.js)
-Open a new terminal window:
-```bash
-cd threat2risk-ai/frontend
-npm install
-npm run dev
-```
-> The SOC Command Center will be live at **`http://localhost:4000`**.
+> Add `--open` to automatically open the SOC Command Center in your default web browser:
+> ```bash
+> python threat2risk-ai.py --open
+> ```
 
 ---
 
