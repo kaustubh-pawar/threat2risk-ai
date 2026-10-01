@@ -265,9 +265,9 @@ function AuthScreen({ onAccess }: { onAccess: () => void }) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 py-12">
+    <div className="min-h-screen flex items-center justify-center px-3 sm:px-6 py-6 sm:py-12">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="w-full max-w-md">
-        <div className="glass-panel-strong p-8 relative overflow-hidden">
+        <div className="glass-panel-strong p-4 sm:p-8 relative overflow-hidden">
           <div className="absolute top-0 left-0 w-12 h-12 border-t-2 border-l-2 border-cyber-cyan/40 rounded-tl-xl" />
           <div className="absolute bottom-0 right-0 w-12 h-12 border-b-2 border-r-2 border-cyber-cyan/40 rounded-br-xl" />
 

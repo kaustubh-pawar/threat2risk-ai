@@ -44,7 +44,7 @@ export function AttackGraphCanvas({ graph }: AttackGraphProps) {
   };
 
   return (
-    <div className="relative w-full glass-card p-4 overflow-hidden border border-slate-800">
+    <div className="relative w-full glass-card p-3 sm:p-4 overflow-x-auto border border-slate-800">
       <div className="flex items-center justify-between mb-3">
         <div>
           <h3 className="text-sm font-bold text-white flex items-center gap-2">

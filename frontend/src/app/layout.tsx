@@ -9,6 +9,12 @@ export const metadata = {
   description: "Raw Security Evidence -> Attack Story -> Business Risk -> Control Intelligence -> Action",
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+};
+
 export default function RootLayout({
   children,
 }: {

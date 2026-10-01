@@ -7,7 +7,7 @@ import {
   LayoutDashboard, Brain, Bell, AlertTriangle, GitBranch, Clock, FileText,
   Gauge, Crosshair, ShieldCheck, Server, Lightbulb, FileBarChart, Monitor,
   Settings, Search, Volume2, VolumeX, User, Shield, Terminal, ChevronRight,
-  Activity, Network, Radio, FlaskConical, BookOpen, LogOut,
+  Activity, Network, Radio, FlaskConical, BookOpen, LogOut, Menu, X,
 } from 'lucide-react';
 import { useApp } from '@/store/AppContext';
 import { workflowSteps } from '@/data/simData';
@@ -64,12 +64,18 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
   const { authed, commandPaletteOpen, setCommandPaletteOpen } = useApp();
   const pathname = usePathname();
   const router = useRouter();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     if (!authed && pathname !== '/login') {
       router.push('/login');
     }
   }, [authed, pathname, router]);
+
+  useEffect(() => {
+    // Close mobile drawer on navigation
+    setMobileMenuOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -89,11 +95,51 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex h-screen overflow-hidden bg-ink-950 text-slate-200">
-      <Sidebar />
-      <div className="flex-1 flex flex-col min-w-0">
-        <Header />
+      {/* Desktop Sidebar */}
+      <div className="hidden md:flex flex-shrink-0">
+        <Sidebar />
+      </div>
+
+      {/* Mobile Navigation Drawer Overlay */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMobileMenuOpen(false)}
+              className="fixed inset-0 bg-ink-950/80 backdrop-blur-sm z-50 md:hidden"
+            />
+            <motion.div
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 250 }}
+              className="fixed inset-y-0 left-0 w-72 bg-ink-900 border-r border-cyber-cyan/20 z-50 flex flex-col md:hidden"
+            >
+              <div className="h-16 flex items-center justify-between px-4 border-b border-cyber-cyan/10">
+                <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2.5">
+                  <Shield className="w-6 h-6 text-cyber-cyan" />
+                  <span className="font-mono text-sm font-bold tracking-wider text-white">THREAT<span className="text-cyber-cyan">2</span>RISK</span>
+                </Link>
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-2 text-slate-400 hover:text-white"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <MobileSidebarContent onClose={() => setMobileMenuOpen(false)} />
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <Header onToggleMobileMenu={() => setMobileMenuOpen(!mobileMenuOpen)} mobileMenuOpen={mobileMenuOpen} />
         <WorkflowIndicator />
-        <main className="flex-1 overflow-y-auto">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden">
           <AnimatePresence mode="wait">
             <motion.div
               key={pathname}
@@ -101,7 +147,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -4 }}
               transition={{ duration: 0.2 }}
-              className="p-6"
+              className="p-3 sm:p-4 md:p-6"
             >
               {children}
             </motion.div>
@@ -110,6 +156,35 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
       </div>
       <CommandPalette />
     </div>
+  );
+}
+
+function MobileSidebarContent({ onClose }: { onClose: () => void }) {
+  const { audio } = useApp();
+  const pathname = usePathname();
+
+  return (
+    <nav className="flex-1 overflow-y-auto py-3 px-3 space-y-1">
+      {navItems.map((item) => {
+        const Icon = item.icon;
+        const href = PAGE_ROUTE_MAP[item.page];
+        const active = pathname === href || (href !== '/dashboard' && pathname?.startsWith(href));
+        return (
+          <Link
+            key={item.page}
+            href={href}
+            onClick={() => { audio.play('click'); onClose(); }}
+            className={`nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-mono text-xs transition-colors ${
+              active ? 'bg-cyber-cyan/15 text-cyber-cyan font-bold border border-cyber-cyan/30' : 'text-slate-300 hover:bg-ink-800'
+            }`}
+          >
+            <Icon className={`w-4 h-4 flex-shrink-0 ${active ? 'text-cyber-cyan' : 'text-slate-400'}`} />
+            <span className="truncate">{item.label}</span>
+            {active && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-cyber-cyan animate-pulseGlow" />}
+          </Link>
+        );
+      })}
+    </nav>
   );
 }
 
@@ -165,7 +240,7 @@ function Sidebar() {
   );
 }
 
-function Header() {
+function Header({ onToggleMobileMenu, mobileMenuOpen }: { onToggleMobileMenu: () => void; mobileMenuOpen: boolean }) {
   const { audio, setCommandPaletteOpen, currentUser, setAuthed } = useApp();
   const router = useRouter();
   const [time, setTime] = useState(new Date());
@@ -176,9 +251,18 @@ function Header() {
   }, []);
 
   return (
-    <header className="h-16 flex-shrink-0 border-b border-cyber-cyan/10 bg-ink-900/50 backdrop-blur-md flex items-center justify-between px-6 z-30">
-      <div className="flex items-center gap-4">
-        <h1 className="text-lg font-bold text-white font-mono tracking-wide hidden md:block">Threat<span className="text-cyber-cyan">2</span>Risk AI</h1>
+    <header className="h-16 flex-shrink-0 border-b border-cyber-cyan/10 bg-ink-900/50 backdrop-blur-md flex items-center justify-between px-3 sm:px-6 z-30">
+      <div className="flex items-center gap-3">
+        {/* Mobile Hamburger Button */}
+        <button
+          onClick={() => { audio.play('click'); onToggleMobileMenu(); }}
+          className="p-2 rounded-lg bg-ink-800/60 border border-ink-600 text-slate-300 hover:text-white md:hidden"
+          aria-label="Toggle navigation drawer"
+        >
+          {mobileMenuOpen ? <X className="w-5 h-5 text-cyber-cyan" /> : <Menu className="w-5 h-5 text-cyber-cyan" />}
+        </button>
+
+        <h1 className="text-base sm:text-lg font-bold text-white font-mono tracking-wide">Threat<span className="text-cyber-cyan">2</span>Risk <span className="text-xs text-slate-500 font-mono">AI</span></h1>
         <div className="hidden lg:flex items-center gap-3 pl-4 border-l border-ink-700">
           {['SIEM', 'AI', 'RISK'].map((s) => (
             <div key={s} className="flex items-center gap-1.5">
