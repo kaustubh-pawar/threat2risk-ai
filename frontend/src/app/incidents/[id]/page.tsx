@@ -121,8 +121,8 @@ export default function IncidentDetailPage({ params }: { params: { id: string } 
 
       {/* TAB 1: OVERVIEW & TIMELINE */}
       {activeTab === "overview" && (
-        <div className="grid grid-cols-12 gap-6">
-          <div className="col-span-7 glass-card p-5 border border-slate-800 space-y-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div className="col-span-1 lg:col-span-7 glass-card p-5 border border-slate-800 space-y-4">
             <h3 className="text-xs font-bold text-white flex items-center gap-2">
               <Clock className="w-4 h-4 text-blue-400" /> Chronological Attack Progression Timeline
             </h3>
@@ -199,7 +199,7 @@ export default function IncidentDetailPage({ params }: { params: { id: string } 
             <ShieldAlert className="w-4 h-4 text-blue-400" /> Mapped MITRE ATT&CK Techniques
           </h3>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {(incident.mitre_mappings || []).map((m: any, idx: number) => (
               <div key={m.technique_id || idx} className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
                 <div className="flex items-center justify-between">
@@ -222,9 +222,9 @@ export default function IncidentDetailPage({ params }: { params: { id: string } 
 
       {/* TAB 5: EXPLAINABLE RISK & WHAT-IF SIMULATOR */}
       {activeTab === "risk" && (
-        <div className="grid grid-cols-12 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Factor Breakdown */}
-          <div className="col-span-7 glass-card p-5 border border-slate-800 space-y-4">
+          <div className="col-span-1 lg:col-span-7 glass-card p-5 border border-slate-800 space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-xs font-bold text-white">Explainable Risk Factor Weights</h3>
               <span className={`px-2.5 py-1 rounded text-xs font-bold font-mono ${currentRisk.overall_score >= 75 ? "bg-red-500/20 text-red-400 border border-red-500/30" : "bg-amber-500/20 text-amber-400 border border-amber-500/30"}`}>

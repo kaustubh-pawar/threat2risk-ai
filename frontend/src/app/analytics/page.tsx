@@ -139,7 +139,7 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Top Hero Cards Grid (Minimalist Dark Gold & Contrast Cards) */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {keyMetrics.map((m, idx) => (
           <div key={idx} className="glass-card p-5 border border-slate-800/80 relative overflow-hidden group hover:border-amber-500/40 transition-all duration-300">
             <div className="flex items-center justify-between mb-3">
@@ -169,9 +169,9 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Main Analytical Section: Large Purple Gradient Area Chart & Dark Gold Breakdown */}
-      <div className="grid grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Main Large Visual Chart (Purple Glass Theme from reference image) */}
-        <div className="col-span-8 glass-card p-6 border border-slate-800 bg-gradient-to-b from-slate-900/90 via-slate-900/60 to-purple-950/20">
+        <div className="col-span-1 lg:col-span-8 glass-card p-6 border border-slate-800 bg-gradient-to-b from-slate-900/90 via-slate-900/60 to-purple-950/20">
           <div className="flex items-center justify-between mb-4">
             <div>
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
@@ -255,9 +255,9 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Lower Row: MITRE Distribution & Asset Risk Bar Chart */}
-      <div className="grid grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* MITRE Tactic Distribution Pie */}
-        <div className="col-span-5 glass-card p-6 border border-slate-800">
+        <div className="col-span-1 lg:col-span-5 glass-card p-6 border border-slate-800">
           <h3 className="text-xs font-bold text-white mb-4 flex items-center gap-2">
             <PieIcon className="w-4 h-4 text-purple-400" />
             MITRE ATT&CK Tactic Distribution (%)
@@ -287,7 +287,7 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Asset Risk Score Bar Chart */}
-        <div className="col-span-7 glass-card p-6 border border-slate-800">
+        <div className="col-span-1 lg:col-span-7 glass-card p-6 border border-slate-800">
           <h3 className="text-xs font-bold text-white mb-4 flex items-center gap-2">
             <BarChart2 className="w-4 h-4 text-amber-400" />
             Asset Criticality & Risk Score Ranking
